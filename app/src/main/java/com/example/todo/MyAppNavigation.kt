@@ -8,27 +8,44 @@ import androidx.navigation.compose.rememberNavController
 import com.example.todo.pages.HomePage
 import com.example.todo.pages.LoginPage
 import com.example.todo.pages.SignupPage
+import com.example.todo.pages.TodoListPage
 
 @Composable
 fun MyAppNavigation(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
-    todoViewModel: TodoViewModel
+    todoViewModel: TodoViewModel = TodoViewModel() // Pass the TodoViewModel
 ) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginPage(modifier, navController, authViewModel)
+            LoginPage(
+                modifier = modifier,
+                navController = navController,
+                authViewModel = authViewModel
+            )
         }
         composable("signup") {
-            SignupPage(modifier, navController, authViewModel)
+            SignupPage(
+                modifier = modifier,
+                navController = navController,
+                authViewModel = authViewModel
+            )
         }
         composable("home") {
-            HomePage(modifier, navController, authViewModel)
+            HomePage(
+                modifier = modifier,
+                navController = navController
+            )
         }
+
         composable("TodoListPage") {
-            TodoListPage(viewModel = todoViewModel)
+            TodoListPage(
+                viewModel = todoViewModel,
+                authViewModel = authViewModel,
+                navController = navController
+            )
         }
     }
 }

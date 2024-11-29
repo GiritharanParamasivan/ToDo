@@ -1,77 +1,97 @@
 package com.example.todo
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class AuthViewModel : ViewModel() {
 
-    private val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val _authState = MutableLiveData<AuthState>()
-    val authState: LiveData<AuthState> = _authState
+    // State for tracking authentication status
+    private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
+    val authState: StateFlow<AuthState> = _authState
 
     init {
-        checkAuthStatus()
-    }
-
-
-    fun checkAuthStatus(){
-        if(auth.currentUser==null){
-            _authState.value = AuthState.Unauthenticated
-        }else{
-            _authState.value = AuthState.Authenticated
+        // Check if a user is already signed in
+        firebaseAuth.currentUser?.let {
+            _authState.value = AuthState.Authenticated(it.uid)
         }
     }
 
-    fun login(email : String,password : String){
-
-        if(email.isEmpty() || password.isEmpty()){
-            _authState.value = AuthState.Error("Email or password can't be empty")
+    /**
+     * Sign up a new user with email and password.
+     */
+    fun signup(email: String, password: String) {
+        if (email.isBlank() || password.isBlank()) {
+            _authState.value = AuthState.Error("Email or password cannot be blank")
             return
         }
-        _authState.value = AuthState.Loading
-        auth.signInWithEmailAndPassword(email,password)
-            .addOnCompleteListener{task->
-                if (task.isSuccessful){
-                    _authState.value = AuthState.Authenticated
-                }else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"Something went wrong")
+
+        // Using `suspend` and `await` for better coroutine handling
+        viewModelScope.launch {
+            try {
+                val user = firebaseAuth.createUserWithEmailAndPassword(email, password).await().user
+                if (user != null) {
+                    _authState.value = AuthState.Authenticated(user.uid)
+                    Log.d("AuthViewModel", "Signup successful: ${user.uid}")
                 }
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Signup failed: ${e.message}")
+                _authState.value = AuthState.Error(e.message ?: "Signup failed")
             }
+        }
     }
 
-    fun signup(firstName: String, lastName: String, email: String, password: String){
-
-        if(email.isEmpty() || password.isEmpty()){
-            _authState.value = AuthState.Error("Email or password can't be empty")
+    /**
+     * Sign in an existing user with email and password.
+     */
+    fun login(email: String, password: String) {
+        if (email.isBlank() || password.isBlank()) {
+            Log.e("AuthViewModel", "Email or password cannot be blank")
             return
         }
-        _authState.value = AuthState.Loading
-        auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener{task->
-                if (task.isSuccessful){
-                    _authState.value = AuthState.Authenticated
-                }else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"Something went wrong")
+
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading // Set loading state
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = task.result?.user
+                        user?.let {
+                            _authState.value = AuthState.Authenticated(it.uid)
+                            Log.d("AuthViewModel", "Login successful: ${it.uid}")
+                        }
+                    } else {
+                        Log.e("AuthViewModel", "Login failed: ${task.exception?.message}")
+                        _authState.value = AuthState.Error(task.exception?.message ?: "Unknown error")
+                    }
                 }
-            }
+        }
     }
 
-    fun signout(){
-        auth.signOut()
+    /**
+     * Sign out the currently signed-in user.
+     */
+    fun signout() {
+        firebaseAuth.signOut()
         _authState.value = AuthState.Unauthenticated
+        Log.d("AuthViewModel", "User signed out")
     }
-
-
 }
 
-
-sealed class AuthState{
-    object Authenticated : AuthState()
+/**
+ * Represent different authentication states.
+ */
+sealed class AuthState {
     object Unauthenticated : AuthState()
-    object Loading : AuthState()
-    data class Error(val message : String) : AuthState()
+    object Loading : AuthState() // Add Loading state
+    data class Authenticated(val userId: String) : AuthState()
+    data class Error(val message: String) : AuthState()
 }
+
