@@ -5,11 +5,14 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.todo.db.TodoDatabase
+import com.example.todo.preferences.ThemePreferenceManager
 
 class MainApplication : Application() {
 
     companion object {
         lateinit var todoDatabase: TodoDatabase
+            private set
+        lateinit var themePreferenceManager: ThemePreferenceManager
             private set
     }
 
@@ -25,6 +28,9 @@ class MainApplication : Application() {
             .addMigrations(MIGRATION_1_2) // Add migrations to handle schema changes
             .fallbackToDestructiveMigration() // Optional: Clear database if migration fails
             .build()
+
+        // Initialize the ThemePreferenceManager
+        themePreferenceManager = ThemePreferenceManager(applicationContext)
     }
 
     /**

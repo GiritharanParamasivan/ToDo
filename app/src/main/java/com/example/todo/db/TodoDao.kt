@@ -39,4 +39,8 @@ interface TodoDao {
      */
     @Query("DELETE FROM Todo WHERE id = :id")
     suspend fun deleteTodo(id: Int)
+
+    @Query("SELECT * FROM Todo WHERE id = :id LIMIT 1")
+    fun getTodoById(id: Int): Todo?
+
 }

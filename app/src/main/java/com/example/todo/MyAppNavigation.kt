@@ -9,12 +9,14 @@ import com.example.todo.pages.HomePage
 import com.example.todo.pages.LoginPage
 import com.example.todo.pages.SignupPage
 import com.example.todo.pages.TodoListPage
+import com.example.todo.preferences.ThemePreferenceManager
 
 @Composable
 fun MyAppNavigation(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
-    todoViewModel: TodoViewModel = TodoViewModel() // Pass the TodoViewModel
+    todoViewModel: TodoViewModel,
+    themePreferenceManager: ThemePreferenceManager
 ) {
     val navController = rememberNavController()
 
@@ -39,12 +41,12 @@ fun MyAppNavigation(
                 navController = navController
             )
         }
-
         composable("TodoListPage") {
             TodoListPage(
                 viewModel = todoViewModel,
                 authViewModel = authViewModel,
-                navController = navController
+                navController = navController,
+                themePreferenceManager = themePreferenceManager // Pass it here
             )
         }
     }

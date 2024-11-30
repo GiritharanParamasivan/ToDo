@@ -81,4 +81,9 @@ dependencies {
     // Ensure compatibility with Kotlin 2.0
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
+
 }

@@ -61,19 +61,44 @@ class TodoViewModel : ViewModel() {
      * Updates the importance status of a Todo item.
      *
      * @param todo The Todo item to update.
-     * @param isImportant The new importance status.
+     * @param newLevel The new importance status (0 = not important, 1 = important).
      */
     fun updateImportanceLevel(todo: Todo, newLevel: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 todoDao.updateTodo(todo.copy(isImportant = newLevel == 1))
             } catch (e: Exception) {
-                Log.e("TodoViewModel", "Error updating importance: ${e.message}")
+                Log.e(TAG, "Error updating importance: ${e.message}")
             }
         }
     }
 
+    /**
+     * Updates the title of a Todo item.
+     *
+     * @param id The ID of the Todo to update.
+     * @param newTitle The new title for the Todo.
+     */
+    fun updateTodoTitle(id: Int, newTitle: String) {
+        if (newTitle.isBlank()) {
+            Log.e(TAG, "Todo title cannot be blank.")
+            return
+        }
 
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val todo = todoDao.getTodoById(id)
+                if (todo != null) {
+                    todoDao.updateTodo(todo.copy(title = newTitle))
+                    Log.d(TAG, "Todo updated successfully: $todo")
+                } else {
+                    Log.e(TAG, "Todo not found with ID: $id")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error updating Todo title: ${e.message}")
+            }
+        }
+    }
 
 
     companion object {
