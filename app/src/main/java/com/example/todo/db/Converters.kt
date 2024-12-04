@@ -7,13 +7,9 @@ import java.util.Date
 class Converters {
 
     @TypeConverter
-    fun fromDate(date : Date) : Long{
-        return date.time
-    }
+    fun fromDate(date: Date): Long = date.time
 
     @TypeConverter
-    fun toDate(time : Long) : Date{
-        return Date(time)
-    }
-
+    fun toDate(timestamp: Long): Date = Date(timestamp)
 }
+

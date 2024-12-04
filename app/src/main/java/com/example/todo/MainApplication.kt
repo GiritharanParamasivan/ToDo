@@ -2,46 +2,27 @@ package com.example.todo
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.todo.db.TodoDatabase
-import com.example.todo.preferences.ThemePreferenceManager
+import com.example.todo.db.TodoDatabase.Companion.MIGRATION_5_6
 
 class MainApplication : Application() {
 
     companion object {
         lateinit var todoDatabase: TodoDatabase
             private set
-        lateinit var themePreferenceManager: ThemePreferenceManager
-            private set
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize the Room database
+        // Initialize the Room database with migrations
         todoDatabase = Room.databaseBuilder(
             applicationContext,
             TodoDatabase::class.java,
-            TodoDatabase.NAME
+            "todo_database"
         )
-            .addMigrations(MIGRATION_1_2) // Add migrations to handle schema changes
-            .fallbackToDestructiveMigration() // Optional: Clear database if migration fails
+            .addMigrations(MIGRATION_5_6) // Add the new migration here
+            .fallbackToDestructiveMigration() // Optional: Clears the database if migrations fail
             .build()
-
-        // Initialize the ThemePreferenceManager
-        themePreferenceManager = ThemePreferenceManager(applicationContext)
-    }
-
-    /**
-     * Migration from version 1 to version 2.
-     * Adds a new column `isImportant` to the `Todo` table.
-     */
-    private val MIGRATION_1_2 = object : Migration(1, 2) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL(
-                "ALTER TABLE Todo ADD COLUMN isImportant INTEGER NOT NULL DEFAULT 0"
-            )
-        }
     }
 }

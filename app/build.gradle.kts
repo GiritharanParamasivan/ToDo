@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
-    id("com.google.devtools.ksp") version "2.0.21-1.0.27" // Updated KSP
+    id("com.google.devtools.ksp") version "2.0.21-1.0.27"
 }
 
 android {
@@ -68,6 +68,7 @@ dependencies {
     // Room Database
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.androidx.camera.core)
     ksp("androidx.room:room-compiler:2.6.1")
 
     // Testing
@@ -83,7 +84,10 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation ("androidx.activity:activity-compose:1.5.1")
+    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation ("androidx.compose.material:material-icons-extended:1.5.1")
 
 
 }

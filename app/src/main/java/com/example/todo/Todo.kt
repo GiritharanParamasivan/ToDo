@@ -8,8 +8,7 @@ import java.util.Date
 data class Todo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
-    val createdAt: Date,
-    val isImportant: Boolean
+    val isImportant: Boolean = false,
+    val createdAt: Date = Date(), // Ensure Date fields are correctly handled
+    val imageBase64: String? = null
 )
-
-

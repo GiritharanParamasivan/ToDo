@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.todo.MainApplication.Companion.themePreferenceManager
 import com.example.todo.preferences.ThemePreferenceManager
 import com.example.todo.ui.theme.ToDoTheme
 

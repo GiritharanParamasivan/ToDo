@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.todo.pages.HomePage
 import com.example.todo.pages.LoginPage
 import com.example.todo.pages.SignupPage
+import com.example.todo.pages.SplashScreen // Import the SplashScreen
 import com.example.todo.pages.TodoListPage
 import com.example.todo.preferences.ThemePreferenceManager
 
@@ -20,7 +21,13 @@ fun MyAppNavigation(
 ) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "splash") { // Start at splash
+        // Splash Screen
+        composable("splash") {
+            SplashScreen(navController = navController)
+        }
+
+        // Login Screen
         composable("login") {
             LoginPage(
                 modifier = modifier,
@@ -28,6 +35,8 @@ fun MyAppNavigation(
                 authViewModel = authViewModel
             )
         }
+
+        // Signup Screen
         composable("signup") {
             SignupPage(
                 modifier = modifier,
@@ -35,18 +44,22 @@ fun MyAppNavigation(
                 authViewModel = authViewModel
             )
         }
+
+        // Home Screen
         composable("home") {
             HomePage(
                 modifier = modifier,
                 navController = navController
             )
         }
+
+        // Todo List Screen
         composable("TodoListPage") {
             TodoListPage(
                 viewModel = todoViewModel,
                 authViewModel = authViewModel,
                 navController = navController,
-                themePreferenceManager = themePreferenceManager // Pass it here
+                themePreferenceManager = themePreferenceManager
             )
         }
     }

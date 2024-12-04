@@ -1,51 +1,33 @@
 package com.example.todo
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todo.utils.bitmapToBase64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class TodoViewModel : ViewModel() {
 
-    // Data access object for Todo operations
     private val todoDao = MainApplication.todoDatabase.todoDao()
 
-    // LiveData for observing the todo list
     val todoList: LiveData<List<Todo>> = todoDao.getAllTodo()
 
-    /**
-     * Adds a new Todo item to the database.
-     *
-     * @param title The title of the new Todo item.
-     */
-    fun addTodo(title: String) {
-        if (title.isBlank()) {
-            Log.e(TAG, "Todo title cannot be blank.")
-            return
-        }
+    fun addTodo(title: String, imageBase64: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val newTodo = Todo(
-                    title = title,
-                    createdAt = Date(),
-                    isImportant = false
-                )
-                todoDao.addTodo(newTodo)
-                Log.d(TAG, "Todo added successfully: $newTodo")
-            } catch (e: Exception) {
-                Log.e(TAG, "Error adding Todo: ${e.message}")
-            }
+            val newTodo = Todo(
+                title = title,
+                isImportant = false,
+                imageBase64 = imageBase64
+            )
+            todoDao.insertTodo(newTodo)
         }
     }
 
-    /**
-     * Deletes a Todo item from the database by its ID.
-     *
-     * @param id The ID of the Todo to be deleted.
-     */
+
+
     fun deleteTodo(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -57,12 +39,7 @@ class TodoViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Updates the importance status of a Todo item.
-     *
-     * @param todo The Todo item to update.
-     * @param newLevel The new importance status (0 = not important, 1 = important).
-     */
+
     fun updateImportanceLevel(todo: Todo, newLevel: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -73,12 +50,6 @@ class TodoViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Updates the title of a Todo item.
-     *
-     * @param id The ID of the Todo to update.
-     * @param newTitle The new title for the Todo.
-     */
     fun updateTodoTitle(id: Int, newTitle: String) {
         if (newTitle.isBlank()) {
             Log.e(TAG, "Todo title cannot be blank.")
@@ -99,7 +70,6 @@ class TodoViewModel : ViewModel() {
             }
         }
     }
-
 
     companion object {
         private const val TAG = "TodoViewModel"
