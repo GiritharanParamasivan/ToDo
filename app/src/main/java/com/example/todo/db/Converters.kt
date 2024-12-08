@@ -12,4 +12,3 @@ class Converters {
     @TypeConverter
     fun toDate(timestamp: Long): Date = Date(timestamp)
 }
-

@@ -94,4 +94,3 @@ sealed class AuthState {
     data class Authenticated(val userId: String) : AuthState()
     data class Error(val message: String) : AuthState()
 }
-

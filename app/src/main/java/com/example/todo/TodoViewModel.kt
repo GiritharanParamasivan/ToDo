@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 class TodoViewModel : ViewModel() {
 
     private val todoDao = MainApplication.todoDatabase.todoDao()
-
     val todoList: LiveData<List<Todo>> = todoDao.getAllTodo()
 
     fun addTodo(title: String, imageBase64: String? = null) {
@@ -20,13 +19,11 @@ class TodoViewModel : ViewModel() {
             val newTodo = Todo(
                 title = title,
                 isImportant = false,
-                imageBase64 = imageBase64
+                imageBase64 = imageBase64 // Ensure this matches the Todo entity
             )
             todoDao.insertTodo(newTodo)
         }
     }
-
-
 
     fun deleteTodo(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -38,7 +35,6 @@ class TodoViewModel : ViewModel() {
             }
         }
     }
-
 
     fun updateImportanceLevel(todo: Todo, newLevel: Int) {
         viewModelScope.launch(Dispatchers.IO) {

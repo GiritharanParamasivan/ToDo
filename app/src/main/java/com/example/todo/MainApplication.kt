@@ -3,7 +3,7 @@ package com.example.todo
 import android.app.Application
 import androidx.room.Room
 import com.example.todo.db.TodoDatabase
-import com.example.todo.db.TodoDatabase.Companion.MIGRATION_5_6
+import com.example.todo.db.TodoDatabase.Companion.MIGRATION_6_7
 
 class MainApplication : Application() {
 
@@ -20,9 +20,9 @@ class MainApplication : Application() {
             applicationContext,
             TodoDatabase::class.java,
             "todo_database"
-        )
-            .addMigrations(MIGRATION_5_6) // Add the new migration here
-            .fallbackToDestructiveMigration() // Optional: Clears the database if migrations fail
+        ).addMigrations(MIGRATION_6_7)
             .build()
+
+
     }
 }

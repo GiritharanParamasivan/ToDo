@@ -306,43 +306,38 @@ fun TodoItem(
                     fontSize = 16.sp,
                     color = Color.Black
                 )
-                Text(
-                    text = "Created At: ${
-                        SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault()).format(item.createdAt)
-                    }",
-                    fontSize = 12.sp,
-                    color = Color.DarkGray
-                )
+                item.imageBase64?.let {
+                    val bitmap = base64ToBitmap(it)
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "Todo Image",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(4.dp)
+                    )
+                }
             }
             Row {
-                // Star button for importance toggle
-                IconButton(
-                    onClick = { onToggleImportance(item) },
-                    modifier = Modifier.size(40.dp) // Debug sizing
-                ) {
+                // Importance toggle button
+                IconButton(onClick = { onToggleImportance(item) }) {
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "Toggle Importance",
                         tint = if (item.isImportant) Color.Blue else Color.Gray
                     )
                 }
+
                 // Edit button
-                IconButton(
-                    onClick = { onEdit(item) },
-                    modifier = Modifier.size(40.dp) // Debug sizing
-                ) {
+                IconButton(onClick = { onEdit(item) }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = "Edit Task",
-                        tint = Color.DarkGray
+                        tint = Color.Blue // Ensures visibility
                     )
                 }
-                // Delete button with debug background
-                IconButton(
-                    onClick = { onDelete() },
-                    modifier = Modifier
-                        .size(40.dp) // Debug sizing
-                ) {
+
+                // Delete button
+                IconButton(onClick = { onDelete() }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Task",
@@ -353,6 +348,7 @@ fun TodoItem(
         }
     }
 }
+
 
 
 
