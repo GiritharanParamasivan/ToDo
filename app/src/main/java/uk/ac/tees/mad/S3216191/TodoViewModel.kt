@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 class TodoViewModel : ViewModel() {
 
     private val todoDao = MainApplication.todoDatabase.todoDao()
@@ -17,7 +16,7 @@ class TodoViewModel : ViewModel() {
             val newTodo = Todo(
                 title = title,
                 isImportant = false,
-                imageBase64 = imageBase64 // Ensure this matches the Todo entity
+                imageBase64 = imageBase64
             )
             todoDao.insertTodo(newTodo)
         }

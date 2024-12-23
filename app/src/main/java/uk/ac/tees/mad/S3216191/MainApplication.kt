@@ -1,9 +1,9 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 import android.app.Application
 import androidx.room.Room
-import uk.ac.tees.mad.S3216191.db.TodoDatabase
-import uk.ac.tees.mad.S3216191.db.TodoDatabase.Companion.MIGRATION_6_7
+import uk.ac.tees.mad.s3216191.db.TodoDatabase
+import uk.ac.tees.mad.s3216191.db.TodoDatabase.Companion.MIGRATION_6_7
 
 class MainApplication : Application() {
 
@@ -15,7 +15,7 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize the Room database with migrations
+        // Room Database
         todoDatabase = Room.databaseBuilder(
             applicationContext,
             TodoDatabase::class.java,

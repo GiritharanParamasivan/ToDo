@@ -1,8 +1,9 @@
-package uk.ac.tees.mad.S3216191.db
+package uk.ac.tees.mad.s3216191.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import uk.ac.tees.mad.S3216191.Todo
+import uk.ac.tees.mad.s3216191.Todo
+
 
 @Dao
 interface TodoDao {

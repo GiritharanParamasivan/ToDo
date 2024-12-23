@@ -1,14 +1,16 @@
-package uk.ac.tees.mad.S3216191.db
+package uk.ac.tees.mad.s3216191.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import uk.ac.tees.mad.S3216191.Todo
+import uk.ac.tees.mad.s3216191.Todo
+
+
 
 @Database(entities = [Todo::class], version = 6, exportSchema = false)
-@TypeConverters(Converters::class)  // Add your converter here
+@TypeConverters(Converters::class)
 abstract class TodoDatabase : RoomDatabase() {
     abstract fun todoDao(): TodoDao
 
@@ -20,4 +22,3 @@ abstract class TodoDatabase : RoomDatabase() {
         }
     }
 }
-

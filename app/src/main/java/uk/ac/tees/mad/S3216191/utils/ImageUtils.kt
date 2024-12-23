@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191.utils
+package uk.ac.tees.mad.s3216191.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

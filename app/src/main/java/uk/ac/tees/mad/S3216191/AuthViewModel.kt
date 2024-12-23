@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -13,27 +13,25 @@ class AuthViewModel : ViewModel() {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // State for tracking authentication status
+
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
     val authState: StateFlow<AuthState> = _authState
 
     init {
-        // Check if a user is already signed in
+
         firebaseAuth.currentUser?.let {
             _authState.value = AuthState.Authenticated(it.uid)
         }
     }
 
-    /**
-     * Sign up a new user with email and password.
-     */
+   // For New User
     fun signup(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             _authState.value = AuthState.Error("Email or password cannot be blank")
             return
         }
 
-        // Using `suspend` and `await` for better coroutine handling
+
         viewModelScope.launch {
             try {
                 val user = firebaseAuth.createUserWithEmailAndPassword(email, password).await().user
@@ -48,9 +46,7 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Sign in an existing user with email and password.
-     */
+    // Existing User
     fun login(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             Log.e("AuthViewModel", "Email or password cannot be blank")
@@ -58,7 +54,7 @@ class AuthViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            _authState.value = AuthState.Loading // Set loading state
+            _authState.value = AuthState.Loading
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -76,9 +72,7 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Sign out the currently signed-in user.
-     */
+    // Sign out
     fun signout() {
         firebaseAuth.signOut()
         _authState.value = AuthState.Unauthenticated
@@ -86,12 +80,10 @@ class AuthViewModel : ViewModel() {
     }
 }
 
-/**
- * Represent different authentication states.
- */
+
 sealed class AuthState {
     object Unauthenticated : AuthState()
-    object Loading : AuthState() // Add Loading state
+    object Loading : AuthState()
     data class Authenticated(val userId: String) : AuthState()
     data class Error(val message: String) : AuthState()
 }

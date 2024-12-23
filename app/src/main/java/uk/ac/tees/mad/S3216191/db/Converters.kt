@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191.db
+package uk.ac.tees.mad.s3216191.db
 
 import androidx.room.TypeConverter
 import java.util.Date

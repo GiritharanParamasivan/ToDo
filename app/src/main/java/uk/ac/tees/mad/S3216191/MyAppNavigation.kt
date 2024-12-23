@@ -1,14 +1,14 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import uk.ac.tees.mad.S3216191.pages.HomePage
-import uk.ac.tees.mad.S3216191.pages.LoginPage
-import uk.ac.tees.mad.S3216191.pages.SignupPage
-import uk.ac.tees.mad.S3216191.pages.SplashScreen // Import the SplashScreen
+import uk.ac.tees.mad.s3216191.pages.HomePage
+import uk.ac.tees.mad.s3216191.pages.LoginPage
+import uk.ac.tees.mad.s3216191.pages.SignupPage
+import uk.ac.tees.mad.s3216191.pages.SplashScreen
 
 @Composable
 fun MyAppNavigation(
@@ -19,7 +19,7 @@ fun MyAppNavigation(
 ) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "splash") { // Start at splash
+    NavHost(navController = navController, startDestination = "splash") {
         // Splash Screen
         composable("splash") {
             SplashScreen(navController = navController)
@@ -51,7 +51,6 @@ fun MyAppNavigation(
             )
         }
 
-        // Todo List Screen
         composable("TodoListPage") {
             TodoListPage(
                 viewModel = todoViewModel,

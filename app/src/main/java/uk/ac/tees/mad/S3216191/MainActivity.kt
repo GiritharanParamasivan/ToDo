@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import uk.ac.tees.mad.S3216191.ui.theme.ToDoTheme
+import uk.ac.tees.mad.s3216191.ui.theme.ToDoTheme
 
 
 class MainActivity : ComponentActivity() {

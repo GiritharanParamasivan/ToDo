@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191.ui.theme
+package uk.ac.tees.mad.s3216191.ui.theme
 
 import DarkColorScheme
 import LightColorScheme

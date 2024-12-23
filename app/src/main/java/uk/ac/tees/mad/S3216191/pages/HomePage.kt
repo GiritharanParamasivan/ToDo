@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191.pages
+package uk.ac.tees.mad.s3216191.pages
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -13,7 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import uk.ac.tees.mad.S3216191.R
+import uk.ac.tees.mad.s3216191.R
+
 
 @Composable
 fun HomePage(
@@ -22,7 +23,6 @@ fun HomePage(
 ) {
     var showWelcomeMessage by remember { mutableStateOf(false) }
 
-    // Center the entire content
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -36,15 +36,15 @@ fun HomePage(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Pulsing Logo
+
             PulsingLogo(navController)
         }
     }
 }
-
+// Pulsing Logo
 @Composable
 fun PulsingLogo(navController: NavController) {
-    // Define pulsing animation
+
     val scale = rememberInfiniteTransition().animateFloat(
         initialValue = 1f,
         targetValue = 1.1f,
@@ -54,14 +54,14 @@ fun PulsingLogo(navController: NavController) {
         )
     )
 
-    // Pulsing logo with click action
+
     Image(
-        painter = painterResource(id = R.drawable.todo_logo), // Replace with your image file name
+        painter = painterResource(id = R.drawable.todo_logo),
         contentDescription = "Todo App Logo",
         modifier = Modifier
             .size(150.dp)
-            .scale(scale.value) // Apply pulsing effect
-            .clickable { // Navigate to TodoListPage on click
+            .scale(scale.value)
+            .clickable {
                 navController.navigate("TodoListPage")
             }
     )

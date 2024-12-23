@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "uk.ac.tees.mad.S3216191"
+    namespace = "uk.ac.tees.mad.s3216191"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "uk.ac.tees.mad.S3216191"
+        applicationId = "uk.ac.tees.mad.s3216191"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -43,7 +43,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "2.0.0" // Align with Kotlin 2.0.0
+        kotlinCompilerExtensionVersion = "2.0.0"
     }
 }
 
@@ -54,7 +54,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.3")
 
     // Jetpack Compose
-    implementation(platform("androidx.compose:compose-bom:2024.11.00")) // Compose BOM
+    implementation(platform("androidx.compose:compose-bom:2024.11.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:2.7.4")
@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.lifecycle.livedata.core.ktx)
     ksp("androidx.room:room-compiler:2.6.1")
 
     // Testing
@@ -79,7 +80,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.3")
 
-    // Ensure compatibility with Kotlin 2.0
+
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
 

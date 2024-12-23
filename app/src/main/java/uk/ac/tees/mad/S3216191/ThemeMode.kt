@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 enum class ThemeMode {
     LIGHT, DARK, SYSTEM

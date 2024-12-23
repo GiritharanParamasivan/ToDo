@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.S3216191
+package uk.ac.tees.mad.s3216191
 
 import android.Manifest
 import android.app.Activity
@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import uk.ac.tees.mad.S3216191.utils.bitmapToBase64
-import uk.ac.tees.mad.S3216191.utils.base64ToBitmap
+import uk.ac.tees.mad.s3216191.utils.bitmapToBase64
+import uk.ac.tees.mad.s3216191.utils.base64ToBitmap
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,7 +148,7 @@ fun TodoListPage(
                                 imageBase64 = base64Image
                             )
                             inputText = ""
-                            capturedBitmap = null // Reset the captured image
+                            capturedBitmap = null
                         }
                     }) {
                         Text("Add")
@@ -157,7 +157,7 @@ fun TodoListPage(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Display the captured image preview
+
                 if (capturedBitmap != null) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -253,7 +253,7 @@ fun SidebarContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            TextButton(onClick = { onSettingsClick() }) { // Opens Theme Settings
+            TextButton(onClick = { onSettingsClick() }) {
                 Text(text = "Settings")
             }
         }
@@ -325,7 +325,7 @@ fun TodoItem(
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = "Edit Task",
-                        tint = Color.Blue // Ensures visibility
+                        tint = Color.Blue
                     )
                 }
 
