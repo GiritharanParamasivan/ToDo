@@ -10,14 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import uk.ac.tees.mad.s3216191.AuthState
 import uk.ac.tees.mad.s3216191.AuthViewModel
-
 
 @Composable
 fun SignupPage(
@@ -30,6 +29,7 @@ fun SignupPage(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var isPrivacyPolicyAccepted by remember { mutableStateOf(false) } // Consent state
 
     val authState by authViewModel.authState.collectAsState()
     val context = LocalContext.current
@@ -58,7 +58,7 @@ fun SignupPage(
         OutlinedTextField(
             value = firstName,
             onValueChange = { firstName = it },
-            label = { Text(text = "First Name") } // First Name
+            label = { Text(text = "First Name") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -66,7 +66,7 @@ fun SignupPage(
         OutlinedTextField(
             value = lastName,
             onValueChange = { lastName = it },
-            label = { Text(text = "Last Name") } // Last Name
+            label = { Text(text = "Last Name") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -74,7 +74,7 @@ fun SignupPage(
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text(text = "Email") } // Email Id
+            label = { Text(text = "Email") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -82,7 +82,7 @@ fun SignupPage(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(text = "Password") }, // Password
+            label = { Text(text = "Password") },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -96,16 +96,38 @@ fun SignupPage(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Privacy Policy Checkbox
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = isPrivacyPolicyAccepted,
+                onCheckedChange = { isPrivacyPolicyAccepted = it }
+            )
+            Text(
+                text = "I agree to the ",
+                modifier = Modifier.padding(end = 4.dp)
+            )
+            TextButton(
+                onClick = { navController.navigate("privacyPolicy") } // Navigate to Privacy Policy
+            ) {
+                Text("Privacy Policy")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Create Account Button
         Button(
             onClick = {
                 authViewModel.signup(email, password)
             },
-            enabled = authState !is AuthState.Loading
+            enabled = isPrivacyPolicyAccepted && authState !is AuthState.Loading // Enabled only if accepted
         ) {
             if (authState is AuthState.Loading) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
             } else {
-                Text(text = "Create account") // Create Account
+                Text(text = "Create account")
             }
         }
 
@@ -114,7 +136,7 @@ fun SignupPage(
         TextButton(onClick = {
             navController.navigate("login")
         }) {
-            Text(text = "Already have an account? Login") // Already an user
+            Text(text = "Already have an account? Login")
         }
     }
 }

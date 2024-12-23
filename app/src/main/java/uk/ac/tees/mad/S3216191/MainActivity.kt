@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import uk.ac.tees.mad.s3216191.ui.theme.ToDoTheme
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

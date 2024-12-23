@@ -51,6 +51,8 @@ fun TodoListPage(
     var showThemeDialog by remember { mutableStateOf(false) }
     var capturedBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var showPermissionDialog by remember { mutableStateOf(false) }
+    var showGDPRDialog by remember { mutableStateOf(true) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
     val activity = context as Activity
@@ -65,14 +67,14 @@ fun TodoListPage(
         }
     )
 
-    // Check and request camera permission
+    // Permission request
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
                 launcher.launch()
             } else {
-                showPermissionDialog = true // Show dialog if permission is denied
+                showPermissionDialog = true
             }
         }
     )
@@ -94,6 +96,7 @@ fun TodoListPage(
         drawerState = drawerState
     ) {
         Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 TopAppBar(
                     title = { Text("Todo List") },
@@ -111,14 +114,12 @@ fun TodoListPage(
                             Manifest.permission.CAMERA
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
-                        // Permission already granted
                         launcher.launch()
                     } else {
-                        // Request permission
                         permissionLauncher.launch(Manifest.permission.CAMERA)
                     }
                 }) {
-                    Icon(Icons.Filled.Add, contentDescription = "Capture Image")
+                    Icon(Icons.Filled.Add, contentDescription = "Add Todo")
                 }
             }
         ) { innerPadding ->
@@ -130,7 +131,7 @@ fun TodoListPage(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp),
+                        .padding(8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OutlinedTextField(
@@ -149,6 +150,11 @@ fun TodoListPage(
                             )
                             inputText = ""
                             capturedBitmap = null
+
+
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Task Added")
+                            }
                         }
                     }) {
                         Text("Add")
@@ -156,7 +162,6 @@ fun TodoListPage(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
 
                 if (capturedBitmap != null) {
                     Column(
@@ -167,9 +172,7 @@ fun TodoListPage(
                         Image(
                             bitmap = capturedBitmap!!.asImageBitmap(),
                             contentDescription = "Captured Image",
-                            modifier = Modifier
-                                .size(200.dp)
-                                .padding(8.dp)
+                            modifier = Modifier.size(200.dp)
                         )
                         IconButton(onClick = { capturedBitmap = null }) {
                             Icon(Icons.Default.Delete, contentDescription = "Delete Image", tint = Color.Red)
@@ -221,6 +224,24 @@ fun TodoListPage(
                         confirmButton = {
                             TextButton(onClick = { showPermissionDialog = false }) {
                                 Text("OK")
+                            }
+                        }
+                    )
+                }
+
+                if (showGDPRDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showGDPRDialog = false },
+                        title = { Text("Data Privacy Notice") },
+                        text = { Text("This app collects data for providing a personalized experience. Please agree to our privacy policy to continue.") },
+                        confirmButton = {
+                            TextButton(onClick = { showGDPRDialog = false }) {
+                                Text("Agree")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { activity.finish() }) {
+                                Text("Decline")
                             }
                         }
                     )
@@ -341,10 +362,6 @@ fun TodoItem(
         }
     }
 }
-
-
-
-
 
 @Composable
 fun EditTodoDialog(

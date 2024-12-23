@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.s3216191.pages.HomePage
 import uk.ac.tees.mad.s3216191.pages.LoginPage
+import uk.ac.tees.mad.s3216191.pages.PrivacyPolicyPage
 import uk.ac.tees.mad.s3216191.pages.SignupPage
 import uk.ac.tees.mad.s3216191.pages.SplashScreen
 
@@ -41,6 +42,11 @@ fun MyAppNavigation(
                 navController = navController,
                 authViewModel = authViewModel
             )
+        }
+
+        // Privacy Policy Page
+        composable("privacyPolicy") {
+            PrivacyPolicyPage(navController = navController)
         }
 
         // Home Screen
