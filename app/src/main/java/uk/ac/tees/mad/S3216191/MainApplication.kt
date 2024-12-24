@@ -10,12 +10,14 @@ class MainApplication : Application() {
     companion object {
         lateinit var todoDatabase: TodoDatabase
             private set
+        lateinit var gdprPreferenceManager: GDPRPreferenceManager
+            private set
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        // Room Database
+        // Initialize Room Database
         todoDatabase = Room.databaseBuilder(
             applicationContext,
             TodoDatabase::class.java,
@@ -23,6 +25,8 @@ class MainApplication : Application() {
         ).addMigrations(MIGRATION_6_7)
             .build()
 
-
+        // Initialize GDPRPreferenceManager
+        gdprPreferenceManager = GDPRPreferenceManager(this)
     }
 }
+
